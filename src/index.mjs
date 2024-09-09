@@ -97,8 +97,9 @@ export default class JSONConverter {
             name: node.getNodeName(),
             context: node.getContext(),
             items: node.getItems().map(i => {
+                const text=i.getText();
                 return {
-                    text: parse(i.getText()),
+                    text: parse(text),
                     blocks: i.getBlocks().map(b => parse(this.convert(b))),
                 }
             })
