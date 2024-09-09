@@ -12,9 +12,7 @@
     }
   },
   "jest": {
-    "transform": {
-
-    }
+    "transform": {}
   },
   "scripts": {
     "build": "rollup src/index.mjs --file src/index.cjs --format cjs",

@@ -1,0 +1,78 @@
+= Document title
+:attr1: Extra attribute
+
+Introduction text here.
+
+== Section with text only
+Section 1 text.
+
+== Section with list
+* Item 1
+** Item 1.1
+** Item 1.2
+** Item 1.3
+* Item 2 with *formatting*.
+
+== Formatting
+In this section we will show some formatting options.
+
+=== Bold
+This is a **bold** text.
+
+=== Italic
+This is an _italic_ text.
+
+=== Monospace
+This is a `monospace` text.
+
+=== Superscript
+This is a ^superscript^ text.
+
+=== Subscript
+This is a ~subscript~ text.
+
+=== Mark
+This is a #mark# text.
+
+=== Quotation
+This is a "quotation" text.
+
+=== Multiple formatting
+This is a **bold**, _italic_, `monospace`, ^superscript^, ~subscript~, #mark#, "quotation" text.
+
+This is a **bold text, with _italic fragment inside with ^superscript^_**.
+
+Other example: _italic text with **bold fragment inside**_.
+
+== Links
+This is a link to https://example.com[example.com].
+
+This is a link to https://example.com[example.com] with a title.
+
+== Images
+
+image::https://example.com/image.png[Image description]
+
+== Tables
+[cols="1,1"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3
+|===
+
+== Other things
+Page break
+
+<<<
+
+Horizontal line
+
+'''
+
+audio::ocean-waves.wav[]

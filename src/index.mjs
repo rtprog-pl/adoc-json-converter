@@ -23,8 +23,8 @@ export default class JSONConverter {
                 return this.processList(node);
             case "inline_quoted":
                 return this.processInline(node);
-            default:
-                console.warn(`Unprocessed node: ${node.getContext()}:${node.getNodeName()}`);
+            // default:
+                // console.warn(`Unprocessed node: ${node.getContext()}:${node.getNodeName()}`);
         }
         // Default node processing
         return stringify(this.processObjectNode(node));
@@ -38,10 +38,21 @@ export default class JSONConverter {
         let r={
             name: node.getNodeName(),
             context: node.getContext(),
+            attributes: { ...node.getAttributes() },
         }
-        if(typeof(node.getTitle)==='function') r.title=node.getTitle();
+        if(typeof(node.getTitle)==='function' && node.getTitle()) r.title=node.getTitle();
         if(typeof(node.getBlocks)==='function') r.blocks=node.getBlocks().map(b => parse(this.convert(b)));
         else if(typeof(node.getContent)==='function') r.content=parse(node.getContent());
+        if(typeof(node.getAlt)==='function' && node.getAlt()) r.alt=node.getAlt();
+        if(typeof(node.getTarget)==='function' && node.getTarget()) r.target=node.getTarget();
+        if(typeof(node.getType)==='function' && node.getType()) r.type=node.getType();
+        // if(typeof(node.getAuthor)==='function' && node.getAuthor()) r.author=node.getAuthor();
+        if(typeof(node.getId)==='function' && node.getId()) r.id=node.getId();
+        // if(typeof(node.getCaption)==='function' && node.getCaption()) r.caption=node.getCaption();
+        if(typeof(node.getRole)==='function' && node.getRole()) r.role=node.getRole();
+        if(typeof(node.getReftext)==='function' && node.getReftext()) r.reftext=node.getReftext();
+        if(typeof(node.getLevel)==='function' && node.getLevel()) r.reftext=node.getLevel();
+
 
         return r;
     }
@@ -51,10 +62,12 @@ export default class JSONConverter {
      * @param {import('asciidoctor').AbstractBlock} node
      */
     processParagraph(node) {
+        const content=node.getContent();
         return {
             name: node.getNodeName(),
             context: node.getContext(),
-            text: parse(node.getContent())
+            attributes: {...node.getAttributes()},
+            text: parse(content)
         }
     }
 
@@ -63,10 +76,14 @@ export default class JSONConverter {
      * @param {import('asciidoctor').Inline} node
      */
     processInline(node) {
+        const text=node.getText();
         return stringify({
             name: node.getNodeName(),
             context: node.getContext(),
-            text: parse(node.getText()),
+            type: node.getType(),
+            target: node.getTarget(),
+            // alt: node.getAlt(),
+            text: parse(text),
         });
     }
 
