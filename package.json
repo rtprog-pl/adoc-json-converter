@@ -1,0 +1,48 @@
+{
+  "name": "@rtprog/adoc-json-converter",
+  "version": "0.0.1",
+  "description": "AsciiDoctor.js JSON Converter",
+  "main": "src/index.cjs",
+  "module": "src/index.mjs",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs",
+      "require": "./src/index.cjs"
+    }
+  },
+  "jest": {
+    "transform": {
+
+    }
+  },
+  "scripts": {
+    "build": "rollup src/index.mjs --file src/index.cjs --format cjs",
+    "test": "node test/test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rtprog-pl/adoc-json-converter.git"
+  },
+  "keywords": [
+    "adoc",
+    "asciidoc",
+    "asciidoctor",
+    "converter",
+    "json"
+  ],
+  "author": "Ryszard Trojnacki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rtprog-pl/adoc-json-converter/issues"
+  },
+  "homepage": "https://github.com/rtprog-pl/adoc-json-converter#readme",
+  "devDependencies": {
+    "asciidoctor": "^3.0.4",
+    "jest": "^29.7.0",
+    "rollup": "^4.21.2"
+  },
+  "dependencies": {
+    "@rtprog/json-string": "^0.0.1"
+  }
+}
