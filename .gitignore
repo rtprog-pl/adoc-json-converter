@@ -133,4 +133,4 @@ dist
 .idea/
 
 # Build files
-src/index.cjs
+src/*.cjs

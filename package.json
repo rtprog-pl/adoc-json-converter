@@ -9,13 +9,17 @@
     ".": {
       "import": "./src/index.mjs",
       "require": "./src/index.cjs"
+    },
+    "mdast": {
+      "import": "./src/mdast.mjs",
+      "require": "./src/mdast.cjs"
     }
   },
   "jest": {
     "transform": {}
   },
   "scripts": {
-    "build": "rollup src/index.mjs --file src/index.cjs --format cjs",
+    "build": "rollup src/index.mjs --file src/index.cjs --format cjs && rollup src/mdast.mjs --file src/mdast.cjs --format cjs",
     "test": "node test/test.mjs"
   },
   "repository": {
@@ -36,9 +40,13 @@
   },
   "homepage": "https://github.com/rtprog-pl/adoc-json-converter#readme",
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/unist": "^3.0.3",
     "asciidoctor": "^3.0.4",
     "jest": "^29.7.0",
-    "rollup": "^4.21.2"
+    "mdast-util-from-markdown": "^2.0.1",
+    "rollup": "^4.21.2",
+    "unist-util-remove-position": "^5.0.0"
   },
   "dependencies": {
     "@rtprog/json-string": "^0.0.2"
