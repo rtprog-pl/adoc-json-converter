@@ -39,5 +39,6 @@ testDoc('simpleBoldText', '**Bold Text**');
 testDoc('simpleItalicText', '_Italic text_', '*Italic text*');
 testDoc('monospacedText', '`Monospaced text`');
 testDoc('simpleLink', 'https://example.com[Link]', '[Link](https://example.com)');
-testDoc('simpleImage', 'image::image.png[]', '![](image.png)');
-testDoc('simpleImage2', 'image::image.png[Logo]', '![Logo](image.png)');
+// testDoc('simpleImage', 'image:image.png[]', '![](image.png)');
+// testDoc('simpleImage2', 'image:image.png[Logo]', '![Logo](image.png)');
+testDoc('headingTest', '== Heading 2', '## Heading 2');

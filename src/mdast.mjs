@@ -50,6 +50,9 @@ export default class MdastJSONConverter {
     fixNodes(nodes, child) {
         // Already valid node
         if(typeof(nodes)==='object' && typeof (nodes.type)==='string') {
+            if(nodes.type==='block' && this.opts.flat) {
+                return this.fixNodes(nodes.children, child);
+            }
             if(child) return nodes;
             return [nodes];
         }
@@ -62,6 +65,7 @@ export default class MdastJSONConverter {
             if(child) return t;
             return [t];
         }
+        if(child) return nodes;
         // If array of nodes
         if(Array.isArray(nodes)) {
             return nodes.map(n => this.fixNodes(n, true));
@@ -69,6 +73,29 @@ export default class MdastJSONConverter {
         // Manly for debugging
         console.warn("Unknown node: ", nodes);
         return nodes;
+    }
+
+    /**
+     * Helper function to convert AsciiDoctor AbstractNode position to Unist Position.
+     * @param {import('asciidoctor').AbstractNode} node
+     * @return {import('@types/unist').Position}
+     */
+    convertPosition(node) {
+        if(typeof(node.source_location)!=='object') return undefined;
+        /**
+         * @type {import('asciidoctor').SourceLocation}
+         */
+        const sl=node.source_location;
+        if(typeof(sl.getLineNumber)!=='function') return undefined;
+        const point={
+            line: sl.getLineNumber(),
+            column: 0,
+            file: sl.getFile(),
+        }
+        return {
+            start: point,
+            end: point,
+        }
     }
 
     /**
@@ -84,7 +111,7 @@ export default class MdastJSONConverter {
             case "preamble":
                 return this.processObjectNode(node, 'block');
             case "section":
-                return this.processObjectNode(node, 'block');
+                return this.processSection(node);
             case "paragraph":
                 return this.processParagraph(node);
             case "ulist":
@@ -93,10 +120,11 @@ export default class MdastJSONConverter {
                 return this.processInline(node);
             case "inline_anchor":
                 return this.processLink(node);
+            case "inline_image":
             case "image":
                 return this.processImage(node);
-            // default:
-                // console.warn(`Unprocessed node: ${node.getContext()}:${node.getNodeName()}`);
+            default:
+                console.warn(`Unprocessed node: ${node.getContext()}:${node.getNodeName()}`);
         }
         // Default node processing
         return stringify(this.processObjectNode(node, 'unknown:'+node.getNodeName()));
@@ -225,10 +253,36 @@ export default class MdastJSONConverter {
      * @param {import('asciidoctor').Inline} node
      */
     processImage(node) {
+        let alt, target;
+        if(node.getNodeName()==='inline_image') {
+            alt=node.getAlt();
+            target=node.getTarget();
+        } else {
+            alt=node.getAlt();
+            node.getAttribute('target', null);
+        }
+
         return stringify({
             type: 'image',
-            title: node.getAlt() || null,
-            url: node.getAttribute('target', null),
+            alt: alt || null,
+            url: target || null,
         });
+    }
+
+    /**
+     * @param {import('asciidoctor').Section} node
+     * @return {String}
+     */
+    processSection(node) {
+        return stringify({
+            type: 'block',
+            children: [
+                {
+                    type: "heading",
+                    depth: node.getLevel()+1,
+                    children: this.fixNodes(parse(node.getTitle())),
+                }, ...this.fixNodes(node.getBlocks().map(b => this.convert(b)))
+            ]
+        })
     }
 }

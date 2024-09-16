@@ -31,7 +31,8 @@
     "asciidoc",
     "asciidoctor",
     "converter",
-    "json"
+    "json",
+    "mdast"
   ],
   "author": "Ryszard Trojnacki",
   "license": "MIT",
